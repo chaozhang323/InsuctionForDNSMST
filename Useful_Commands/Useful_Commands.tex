@@ -1,0 +1,136 @@
+\documentclass[12pt, oneside]{article}
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper} 
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage[flushleft]{threeparttable}
+\usepackage{gensymb}
+\usepackage{multirow}
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\BibTeX}{\textsc{Bib}\TeX}
+%opening
+\title{Useful Commands}
+\author{}
+
+\begin{document}
+
+
+\section{HDF5 Tools}
+
+\subsection{HDFview.sh}
+This tool can be used to view and edit HDF5 files. 
+
+\noindent In order to use this tool use the command ``hdfview.sh'' followed by the file you wish to open.
+Afterwards you are able to look at the data set and edit cells if needed.
+
+\subsection{h5diff}
+This tool is used in order to compare HDF5 files and output difference in them. The command for this tool is:
+
+\begin{verbatim}
+ h5diff [OPTIONS] file1 file2 object1 object2
+\end{verbatim}
+
+\noindent The only required parts are the 2 files to be compared. If no options are selected the tool will report how many differences there are and
+where they were found, if no differences are found there will be no output. Objects can be selected for comparison these can be groups or datasets, for example /T.
+
+\noindent Some useful options are: 
+
+-r which will report the difference of each value compared or will report no difference if there are no differences
+
+-d delta(this should be a number)  which will only report differences greater than delta
+\newline
+An example use of this tool would be comparing the results of 2 different DNS runs to validate a new code version. This would be done by using the command
+``h5diff -r run1 run2 /T '' in order to check for differences in the temperature calculated. The -r option will make it output 
+
+\begin{verbatim}
+dataset: </T> and </T>
+0 differences found
+\end{verbatim}
+if there are no differences. Without -r there would be no output 
+
+
+\subsection{h5ls}
+
+This tool is used to output information about a HDF5 file, it will report the name and size of each data set of a file.
+The command for this tool is:
+
+\begin{verbatim}
+ h5diff [OPTIONS] file1/object file2/object ... 
+\end{verbatim}
+
+\noindent The /object part can be neglected and will result in information about all datasets of a file being outputted, if included only the dataset referenced by object will be displayed
+
+\newline
+An example use of this tool is finding out the size of the T data set in an HDF5 file contains. This could be done using the command ``h5ls flowdata\_i0001\_0123\_00250000.h5/T'' which outputs
+
+\begin{verbatim}
+ T                        Dataset {1, 123, 295}
+\end{verbatim}
+\newline
+This shows that the dataset T exists and has the dimensions [1,123,295]
+
+
+
+\subsection{h5dump}
+
+This command is used to examine and output an HDF5 file into a readable format.
+
+\noindent The command for this tool is
+
+\begin{verbatim}
+ h5dump [options] file
+\end{verbatim}
+
+\noindent Some useful options are
+
+ -d [object]   this will select a specific dataset, object is a data item like u.
+
+ -p  This will add properties of a file to the outputs. This can be useful when looking at VDS files as it will allow you to inspect the links that make up the file.
+It should be noted that in order to inspect VDS files a tool version of at least HDF5\_1.10 or later will be needed.
+
+\newline
+An example use of this command is finding out what the source files of a VDS are. This could be done with the command 
+\begin{verbatim}
+ h5dump -p VDS_flowdata_00250000.h5  > props
+\end{verbatim}
+
+This will output the data from the file VDS\_flowdata\_00250000.h5 to a file named props. This will display source files like
+
+\begin{verbatim}
+SOURCE {
+  FILE "flowdata_i0124_0246_00250000.h5"
+  DATASET "u"
+  SELECTION ALL
+}
+\end{verbatim}
+
+\section{Module}
+
+Module is a command used for making use of and finding modules on a computer.
+
+\noindent Some uses of the command are:
+
+Loading modules: this is done with the command    ``module load [module name]''.  For example if you wanted to use HDF5 version 10 on bluewaters, you would use the command
+   ``load module cray-hdf5/1.10.0''
+\newline
+   
+Displaying available modules: this is done with the command    ``module avail [module name]''.  This command will display all available modules or if [module name] is filled in, 
+available modules that include the name
+\newline
+
+Finding paths to modules: this is done with the command    ``module show [module name]''.    This command will display the location of the module name you give it. This is helpful for finding 
+the location to use for compiling code.
+
+
+
+
+
+
+
+
+\end{document}

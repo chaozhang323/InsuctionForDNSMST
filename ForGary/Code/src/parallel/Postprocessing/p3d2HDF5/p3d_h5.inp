@@ -1,0 +1,65 @@
+imax  jmax  kmax       kioplane         inode   jnode   MW(molecular weight)    
+792   160     295        10               4        4      28.97               
+iConvert_grid(0/1)     iFormat_grid   
+  0                      0                
+iConvert_flow(0/1)     iFormat_flow          
+ 1                      5               
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+File path for grid:
+gridfile_rd
+./gridp3d.grd
+gridfile_wt 
+./grid.h5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+File path for flowdata: 
+flowpath_rd
+Base_files/
+flowpath_wt
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following is the flowdata number:
+file_be		file_end	file_skip
+200000    200000    1
+
+###############################################################
+Currently Implimented:
+  iformat_flow = 3
+  Cannot use more processors than imax
+  
+  iformat_flow = 4 
+  iformat_flow = 5 
+  At least as many processors as inode/jnode are requried
+
+
+imax,  jmax,  kmax
+1st, 2nd, and 3rd dimension of the input file
+
+Mw:	Molecular weight 
+
+iConvert_grid, iConvert_flow, iConver_inlet :  0 -- not convert
+                                               1 -- convert
+
+iFormat_grid, iFormat_flow   :  0 -- convert plot3d file to HDF5
+                                1 -- convert HDF5 file to plot3d
+                                2 -- separate single HDF5 grid and flowdata into multiple files, each has only one variable
+                                3 -- separate single HDF5 grid and flowdata into multiple files using kioplane
+                                   # kioplane will be used when iFormat = 3
+                                4 -- separate single HDF5 grid and flowdata into multiple files using inode
+                                   # inode will be used when iFormat = 4 
+                                5 -- separate single HDF5 grid and flowdata into multiple files using jnode
+                                   # inode will be used when iFormat = 5 
+
+
+gridfile_rd, gridfile_wt : gridfile path for read and write
+
+flowpath_rd, flowpath_wt : flow path for read and write
+
+file_be, file_end, file_skip: flow file begin, end and skip number
+
+
+
+
+                               
+                               
+                               
+                               

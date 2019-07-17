@@ -1,0 +1,29 @@
+DIR=../..
+include $(DIR)/makecomm.inc
+COMMDIR=$(DIR)/common
+
+commonobjs=$(COMMDIR)/modRWHDF5.o $(COMMDIR)/modFileIO_Compatible.o
+
+srcs=
+objs=$(srcs:.f90=.o) 
+VDS_HDF5=VDS_HDF5
+.SUFFIXES: .f90 .o
+
+all: comm $(srcs) $(VDS_HDF5)
+comm:
+	cd $(COMMDIR) && make
+.f90.o:
+	$(FC) -c $(FFLAG) $(INCLUDE) $<
+$(VDS_HDF5): $(objs) VDS_HDF5.o
+	$(FC) -o $@ $(LINKFLAG) VDS_HDF5.o $(commonobjs) $(LIB) $(LIBLINK)
+
+
+clean: source modules
+
+source:
+	/bin/rm -f $(VDS_HDF5) *.o *.mod *.pc *.il *.d
+modules:
+	/bin/rm -f $(COMMDIR)/*.o $(COMMDIR)/*.mod $(COMMDIR)/*.pc $(COMMDIR)/*.il $(COMMDIR)/*.d
+
+#depencency base on module usage
+VDS_HDF5.o:  $(COMMDIR)/modRWHDF5.o $(COMMDIR)/modFileIO_Compatible.o

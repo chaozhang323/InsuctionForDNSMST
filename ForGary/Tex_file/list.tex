@@ -1,0 +1,80 @@
+\documentclass[12pt, oneside]{article}
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper} 
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage[flushleft]{threeparttable}
+\usepackage{gensymb}
+\usepackage{multirow}
+\usepackage[dvipsnames]{xcolor}
+\newcommand{\BibTeX}{\textsc{Bib}\TeX}
+%opening
+\title{list}
+\author{}
+
+\begin{document}
+\maketitle
+% \tableofcontents
+
+\section{} 
+dnsmst\_utilities/src/serial/Average/
+
+add parallel version for time average code
+
+\section{}
+dnsmst\_utilities/src/serial/Postprocessing/volume/volume\_HDF5/
+
+add parallel version for volume code
+
+\section{}
+dnsmst\_utilities/src/serial/Postprocessing/p3d2HDF5/
+
+add parallel version for the format conversion code
+
+\section{}
+Virtual Dataset (VDS) HDF5
+
+Create virtual dataset using HDF5 format
+
+\section{}
+Compressed Dataset HDF5
+
+Create compressed dataset using HDF5 format
+
+\section{}
+dnsmst\_utilities/src/serial/common/modRWHDF5.f90
+
+Create module file to read and write HDF5 data using Matlab
+
+\section{}
+PDF (probability density function) of wall pressure fluctuation.
+
+Reference: Tsuji et al.~\cite{tsuji2007pressure}
+
+\section{}
+Add bottom BC reading 4 k-plane timeseries data.
+
+1) Generate the 4-iplane or 4-kplane timeseries data.
+
+In deck3d.inp, turn on PlaneseriesSave, the file modSaveInflowPlanes.f90 will generate the 4-iplane data or 4-kplane data. Please check the output data.    
+
+2) Read the 4-iplane timeseries data.
+
+In deck3d.inp, set inletbc=1 and inletdatatype=3, the file planeinlet.inp should also be provided. 
+
+
+Please check the following case for how to read the 4-iplane timeseries data.
+/share/duan/czb58/test\_DNS/Test\_cases/Test\_ShockNoise\_2016-10-10\_largeZ\_4p5/
+
+\newpage
+
+\bibliography{ref}
+\bibliographystyle{aiaa}
+
+
+\end{document}

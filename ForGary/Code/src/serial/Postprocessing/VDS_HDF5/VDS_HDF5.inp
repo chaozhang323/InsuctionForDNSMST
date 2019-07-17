@@ -1,0 +1,64 @@
+imax  jmax  kmax       kioplane         inode  jnode      
+490   1     295         10               4     4                  
+iConvert_grid(0/1)     iFormat_grid   
+  0                      0                
+iConvert_flow(0/1)     iFormat_flow          
+  1                      3               
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+File path for grid files:
+gridfile_rd
+./gridp3d.grd
+gridfile_wt
+./grid.h5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+File path for flowdata files: 
+flowpath_rd
+../Base_files/
+flowpath_wt
+./
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following is the flowdata number:
+file_be		file_end	file_skip
+250000    250000               1
+
+###############################################################
+Some notes for comiling and clean file differnces:
+
+In order to make use of this file you will need to compile with the hdf5_1.10.1
+To do this you will first need to make clean the modules folder, 
+this programs make file is set to do that with the make command.
+Then before remaking change the location of the HDF5 Libary in the makecomm.inc file
+to where hdf5_1.10.1 is located. This is currently /share/duan/czb58/Package/HDF5_1.10.1 on the nic cluster.
+
+
+At this moment file paths are not used so source files should be located in the programs folder
+Additionally iConvert_grid is not avalible
+
+imax,  jmax,  kmax
+1st, 2nd, and 3rd dimension of the completed file
+
+
+iConvert_grid, iConvert_flow, iConver_inlet :  0 -- not convert
+                                               1 -- convert
+
+iFormat_grid, iFormat_flow   :  1 -- Make VDS file from multiple HDF5 files using kioplane
+                                   # kioplane will be used when iFormat = 1
+                                2 -- Make VDS file from multiple HDF5 files using inode
+                                   # inode will be used when iFormat = 2
+                                3 -- Make VDS file from multiple HDF5 files using jnode
+                                   # jnode will be used when iFormat = 3
+
+
+gridfile_rd, gridfile_wt : gridfile path for read and write
+
+flowpath_rd, flowpath_wt : flow path for read and write
+
+file_be, file_end, file_skip: flow file begin, end and skip number
+
+
+
+
+                               
+                               
+                               
+                               

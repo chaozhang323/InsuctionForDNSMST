@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%% Purpose %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%This program is used to extend the dimensions of flow and grid files in
+%the j direction be copying the file along the j direction.
+%
+%It will create a data file containing x and z grid spacing
+%
+%It will find the i index that most closely corresponds to an x location
+%on the upper surface of a wing
+
+%%%%%%%%%%%%%%%% Explanation of Inputs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%File_Dim = how many dimensions that a file has
+%FlowFile_in = name of your input file
+%FlowFile_out = what to name output file
+%Dnum = how many varibles to read
+%Dname = the name of the variables
+%dimO = dimensions of your input file
+%dimN = desired dimensions of your output file if not the same as input
+%       data will be repeated until file is filled (only in j direction)
+%GridFile_in = name of grid file to be used as input
+%GridFile_out = name for output grid file
+%xloc = x location to find the i index for
+%iflow = wether or not a flowfile is being provided
+%igrid = wether or not a gridfile is being provided
+
+
+%%%%%%%%%%%%%%%% START OF INPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+File_Dim = 3;
+
+FlowFileLoc='TestFiles/';
+GridFileLoc='TestFiles/';
+OutputFileName='Movie.plt';
+Dnum=5; Dname={'p' 'T' 'u' 'v' 'w'};
+
+idimsm = 490; jdimsm = 1; kdimsm = 295;
+ist = 1; jst = 1; kst=1;
+
+fstart= 100; fstride=100; fend=300;
+
+%%%%%%%%%%%%%%%% END OF INPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% Intialize Variables %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fsol=InitFlowHDF5(File_Dim);
+
+fsol.dimsm=[kdimsm, idimsm, jdimsm];
+fsol.offset=[kst-1, ist-1, jst-1];
+
+grd={'x', 'y', 'z'};
+
+nfiles=int16((fend-fstart)/fstride+0.5);
+fnum=fstart;
+
+
+%%%%%%%%%%%%%%% Main Function %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%read grid data
+fsol.fname=strcat(GridFileLoc,'grid.h5');
+for n=1:3
+    fsol.dname=grd{n};
+    grd(:,:,:,n)=ReadHDF5(fsol);
+end
+
+%read flow data
+for n=1:nfiles
+    fsol.fname=sprintf(strcat(FlowFileLoc,'flowdata_','%08u.h5'),fnum);
+    
+    for nn=1:Dnum
+        fsol.dname=Dname{nn};
+        buffer(:,:,:,nn,n)=ReadHDF5(fsol);
+    end
+    fnum=fnum+fstride;
+end
+        
+
+tdata=mat2tecplotSteup(Dnum+3,Dname,grd,buffer,nfiles);
+
+mat2tecplot(tdata,OutputFileName);
+
+
+    
+
+
